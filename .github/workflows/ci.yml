@@ -53,8 +53,11 @@ jobs:
             "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
           echo "$GITLEAKS_SHA256  $archive" | sha256sum --check
           tar --extract --gzip --file "$archive" --directory "$RUNNER_TEMP" gitleaks
+      # gitleaks reads every branch, on purpose: a pushed branch is public, so a leak on any branch
+      # fails every run until it's dealt with. --verbose names the file and commit, and --redact
+      # keeps the secret itself out of the log.
       - name: Scan the whole history
-        run: '"$RUNNER_TEMP/gitleaks" git --redact --no-banner .'
+        run: '"$RUNNER_TEMP/gitleaks" git --redact --verbose --no-banner .'
 
   quality:
     name: Lint, types and tests
