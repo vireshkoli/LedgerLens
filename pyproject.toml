@@ -9,6 +9,8 @@ license-files = ["LICENSE"]
 dependencies = [
     "fastapi==0.162.0",
     "psycopg[binary]==3.3.8",
+    "pydantic==2.14.3",
+    "pyyaml==6.0.3",
     "uvicorn==0.54.0",
 ]
 
@@ -21,6 +23,7 @@ dev = [
     "pytest==9.2.0",
     "pytest-cov==7.1.0",
     "ruff==0.17.3",
+    "types-pyyaml==6.0.12.20261103",
 ]
 
 [build-system]
@@ -51,14 +54,14 @@ convention = "google"
 python_version = "3.14"
 strict = true
 files = ["src", "scripts", "tests"]
-mypy_path = ["src", "scripts"]
+mypy_path = ["src", "scripts", "tests/support"]
 explicit_package_bases = true
 
 [tool.pytest.ini_options]
 addopts = "--strict-markers --strict-config --import-mode=importlib --cov --cov-report=term-missing"
 # tests/stack needs the running stack, so it has its own target: make test-stack.
 testpaths = ["tests/unit", "tests/integration"]
-pythonpath = ["scripts"]
+pythonpath = ["scripts", "tests/support"]
 xfail_strict = true
 
 [tool.coverage.run]
