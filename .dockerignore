@@ -1,0 +1,14 @@
+# An allow-list: anything not named here stays out of every image, so .env, the private tier and
+# local notes can't be copied in by accident.
+*
+!LICENSE
+!README.md
+!deploy/nginx.conf
+!pyproject.toml
+!src/
+!uv.lock
+!web/
+
+**/__pycache__/
+web/dist/
+web/node_modules/

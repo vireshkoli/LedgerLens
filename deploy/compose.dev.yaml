@@ -1,0 +1,32 @@
+# Hot reload on top of compose.yaml: the containers run the source from your working copy.
+services:
+  api:
+    command:
+      - uvicorn
+      - ledgerlens.api.app:app
+      - --host=0.0.0.0
+      - --port=8000
+      - --reload
+      - --reload-dir=/app/src
+    environment:
+      # Takes priority over the copy installed in the image.
+      PYTHONPATH: /app/src
+    volumes:
+      - ../src:/app/src:ro
+
+  web:
+    build:
+      target: dev
+    ports: !override
+      - "127.0.0.1:5173:5173"
+    volumes:
+      - ../web:/app
+      # Keeps the Linux packages from the image out of reach of the Mac's web/node_modules.
+      - /app/node_modules
+    mem_limit: 512m
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:5173/').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"

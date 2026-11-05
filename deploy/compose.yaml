@@ -1,0 +1,128 @@
+# The full local stack. Run it through the Makefile, which keeps Colima within its memory limit.
+# Every service sets mem_limit, and tests/integration/test_compose_config.py checks that the total
+# still fits the 6 GiB VM. Ports bind to 127.0.0.1 so nothing is reachable from the network.
+name: ledgerlens
+
+services:
+  postgres:
+    image: pgvector/pgvector:0.8.7-pg18-trixie
+    environment:
+      POSTGRES_USER: ledgerlens
+      POSTGRES_DB: ledgerlens
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set it in .env}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql
+    shm_size: 256m
+    mem_limit: 1536m
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready --username=ledgerlens --dbname=ledgerlens"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  api:
+    build:
+      context: ..
+      dockerfile: deploy/api.Dockerfile
+    environment:
+      PGHOST: postgres
+      PGUSER: ledgerlens
+      PGDATABASE: ledgerlens
+      PGPASSWORD: ${POSTGRES_PASSWORD:?set it in .env}
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    mem_limit: 1g
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/ready', timeout=3)
+      interval: 5s
+      timeout: 4s
+      retries: 12
+
+  web:
+    build:
+      context: ..
+      dockerfile: deploy/web.Dockerfile
+      target: production
+    ports:
+      - "127.0.0.1:5173:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://127.0.0.1:8080/"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  keycloak:
+    profiles: [auth]
+    image: quay.io/keycloak/keycloak:26.8.1
+    command: start-dev
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?set it in .env}
+      KC_HEALTH_ENABLED: "true"
+    ports:
+      - "127.0.0.1:8080:8080"
+    mem_limit: 1g
+    healthcheck:
+      # The image has no curl or wget, so bash talks to the management port directly.
+      test:
+        - CMD-SHELL
+        - >-
+          exec 3<>/dev/tcp/127.0.0.1/9000 &&
+          printf 'GET /health/ready HTTP/1.0\r\nHost: localhost\r\n\r\n' >&3 &&
+          grep -q '"status": "UP"' <&3
+      interval: 10s
+      timeout: 5s
+      retries: 18
+
+  prometheus:
+    profiles: [dashboards]
+    image: prom/prometheus:v3.15.1
+    ports:
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://127.0.0.1:9090/-/ready"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  grafana:
+    profiles: [dashboards]
+    image: grafana/grafana:13.3.0
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?set it in .env}
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ./grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml:ro
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://127.0.0.1:3000/api/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 18
+
+volumes:
+  postgres-data:
+  prometheus-data:
+  grafana-data:

@@ -1,0 +1,8 @@
+# The API joins this list when it exposes metrics in V3-18.
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
