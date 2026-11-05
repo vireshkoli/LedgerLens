@@ -9,7 +9,6 @@ Update this at the end of every task, so work can restart from here after a conv
 ## Open questions
 
 - O9: you report your OpenAI and Anthropic key credit before V3-1.
-- Whether to require CI checks before anything reaches `main`. Until then, CI reports problems but can't stop a push.
 
 ## Hours
 
