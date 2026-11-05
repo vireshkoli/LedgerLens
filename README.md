@@ -1,5 +1,7 @@
 # LedgerLens
 
+[![CI](https://github.com/vireshkoli/LedgerLens/actions/workflows/ci.yml/badge.svg)](https://github.com/vireshkoli/LedgerLens/actions/workflows/ci.yml)
+
 An analyst-grade research engine over public company filings. It answers multi-hop questions with citations down to the page and the table cell, and checks every number it shows against official XBRL data.
 
 **Status:** early build. No results exist yet, so none are reported here. Every number that appears in this README later will link to a recorded run.
@@ -16,6 +18,7 @@ make dev     # start the local stack with hot reload
 make up      # start the local stack from production images
 make down    # stop the local stack and keep its data
 make wipe    # stop the local stack and delete its data
+make test-stack  # test the running stack
 ```
 
 The web app is at <http://localhost:5173> and the API docs are at <http://localhost:8000/docs>. Add `COMPOSE_PROFILES=auth,dashboards` to `make dev` or `make up` to include Keycloak, Prometheus and Grafana.
