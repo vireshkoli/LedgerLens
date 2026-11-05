@@ -1,6 +1,6 @@
 # LedgerLens working rules
 
-Start every session by reading `docs/progress.md`. It says which task is current, what comes next and what's open. The approved plan is `docs/plan.local.md`, and host details are in your local notes. Both are local only and never go in Git.
+Start every session by reading `docs/progress.md`. It says which task is current, what comes next and what's open. The approved plan is `docs/plan.local.md`, the brief is `PROJECT_BRIEF.md`, and host details are in your local notes. All three are local only and never go in Git.
 
 ## Sessions
 

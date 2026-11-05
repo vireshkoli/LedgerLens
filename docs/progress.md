@@ -2,9 +2,9 @@
 
 Update this at the end of every task, so a new session can restart from here alone.
 
-**Current task:** none. M0-1 is done, and its branch is waiting to be pushed.
+**Current task:** none. M0-1 is done and pushed on branch `m0-1-repo-skeleton`, waiting for your review.
 
-**Next task:** M0-2, compose stack.
+**Next task:** M0-2, compose stack. Branch from `m0-1-repo-skeleton` unless it has been merged to `main`.
 
 ## Open questions
 

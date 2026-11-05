@@ -3,8 +3,9 @@
 .env.*
 !.env.example
 
-# Local-only notes: host details, budget and the approved plan
+# Local-only notes: host details, budget, the approved plan and the project brief
 *.local.md
+PROJECT_BRIEF.md
 
 # Python
 __pycache__/
