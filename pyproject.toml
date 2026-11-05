@@ -1,0 +1,65 @@
+[project]
+name = "ledgerlens"
+version = "0.1.0"
+description = "Analyst-grade research engine over company filings, with citations to the table cell and numbers checked against XBRL."
+readme = "README.md"
+requires-python = ">=3.14,<3.15"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "hypothesis==6.170.14",
+    "mypy==2.4.1",
+    "pre-commit==4.7.0",
+    "pytest==9.2.0",
+    "pytest-cov==7.1.0",
+    "ruff==0.17.3",
+]
+
+[build-system]
+requires = ["uv_build==0.13.7"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+src = ["src", "scripts", "tests"]
+
+[tool.ruff.lint]
+# D enforces docstrings on public functions and ERA flags commented-out code,
+# so the brief's Section 12.6 rules are checked by a tool and not by memory.
+select = [
+    "A", "ANN", "ARG", "B", "C4", "D", "E", "ERA", "F", "I", "N", "PL", "PT",
+    "PTH", "RET", "RUF", "S", "SIM", "UP", "W",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/*" = ["S603", "S607"]
+"tests/*" = ["D", "PLR2004", "S101", "S603", "S607"]
+
+[tool.mypy]
+python_version = "3.14"
+strict = true
+files = ["src", "scripts", "tests"]
+mypy_path = ["src", "scripts"]
+explicit_package_bases = true
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --strict-config --import-mode=importlib --cov --cov-report=term-missing"
+testpaths = ["tests"]
+pythonpath = ["scripts"]
+xfail_strict = true
+
+[tool.coverage.run]
+branch = true
+source = ["src/ledgerlens", "scripts"]
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
+exclude_also = ["if __name__ == .__main__.:"]

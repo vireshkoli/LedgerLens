@@ -1,0 +1,34 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Local-only notes: host details, budget and the approved plan
+*.local.md
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+.coverage.*
+htmlcov/
+dist/
+build/
+
+# Data never lives in Git. Filings, FinanceBench and the private tier stay on disk.
+data/
+private/
+*.pdf
+
+# Run artifacts: summaries are committed, everything else stays local
+runs/*/artifacts/
+
+# Editors and macOS
+.DS_Store
+.idea/
+.vscode/

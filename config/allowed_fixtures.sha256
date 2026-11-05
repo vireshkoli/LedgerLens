@@ -1,0 +1,3 @@
+# SEC-sourced test fixtures that may be committed even though they are PDFs.
+# Format: <sha256>  <path>, the same as `shasum -a 256` prints.
+# The hash matters: a path alone would let a different file replace an approved one.
