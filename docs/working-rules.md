@@ -56,4 +56,6 @@ Start every session by reading `docs/progress.md` and the latest entries in `doc
 ## Version control
 
 - One branch per task, named like `m0-1-repo-skeleton`. Small commits with conventional-commit messages.
-- Every merged change passes CI. Tag each milestone release.
+- Everything reaches `main` through a pull request, merged with `gh pr merge --rebase` once the required checks pass. A ruleset refuses direct pushes, and nobody can bypass it.
+- A pushed branch is public even if CI fails, so the pre-commit hook is the only thing that stops a file before it's published.
+- Tag each milestone release.
