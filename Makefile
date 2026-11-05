@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help setup lint test dev up down wipe logs demo costs eval-smoke eval-full
+.PHONY: help setup lint test test-stack dev up down wipe logs demo costs eval-smoke eval-full
 
 COMPOSE := docker compose --env-file .env --file deploy/compose.yaml
 COMPOSE_DEV := $(COMPOSE) --file deploy/compose.dev.yaml
@@ -18,6 +18,9 @@ lint: ## Run every pre-commit hook on all tracked files
 test: ## Run the tests with the coverage gate
 	uv run pytest
 	npm --prefix web test
+
+test-stack: ## Test the running stack (start it first with make up)
+	uv run pytest tests/stack --no-cov
 
 .env:
 	cp .env.example .env

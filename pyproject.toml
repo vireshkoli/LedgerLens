@@ -56,7 +56,8 @@ explicit_package_bases = true
 
 [tool.pytest.ini_options]
 addopts = "--strict-markers --strict-config --import-mode=importlib --cov --cov-report=term-missing"
-testpaths = ["tests"]
+# tests/stack needs the running stack, so it has its own target: make test-stack.
+testpaths = ["tests/unit", "tests/integration"]
 pythonpath = ["scripts"]
 xfail_strict = true
 
