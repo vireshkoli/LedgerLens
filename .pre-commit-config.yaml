@@ -7,7 +7,9 @@ repos:
         args: ["--maxkb=1024"]
       - id: check-merge-conflict
       - id: check-toml
+      # Compose's !override tag isn't standard YAML, and test_compose_config parses this file.
       - id: check-yaml
+        exclude: ^deploy/compose\.dev\.yaml$
       - id: end-of-file-fixer
       - id: trailing-whitespace
 
@@ -39,4 +41,22 @@ repos:
         entry: uv run mypy
         language: system
         types_or: [python, pyi]
+        pass_filenames: false
+      - id: prettier
+        name: prettier
+        entry: npm --prefix web run --silent format:check
+        language: system
+        files: ^web/
+        pass_filenames: false
+      - id: eslint
+        name: eslint
+        entry: npm --prefix web run --silent lint
+        language: system
+        files: ^web/
+        pass_filenames: false
+      - id: tsc
+        name: tsc
+        entry: npm --prefix web run --silent typecheck
+        language: system
+        files: ^web/
         pass_filenames: false

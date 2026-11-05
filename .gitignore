@@ -21,6 +21,9 @@ htmlcov/
 dist/
 build/
 
+# Web
+node_modules/
+
 # Data never lives in Git. Filings, FinanceBench and the private tier stay on disk.
 data/
 private/
