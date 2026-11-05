@@ -1,6 +1,6 @@
 # Progress
 
-Update this at the end of every task, so a new session can restart from here alone.
+Update this at the end of every task, so work can restart from here after a conversation summary or in a new session.
 
 **Current task:** none. M0-1 is done and on `main`.
 

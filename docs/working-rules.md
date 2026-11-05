@@ -1,10 +1,12 @@
 # LedgerLens working rules
 
-Start every session by reading `docs/progress.md`. It says which task is current, what comes next and what's open. The approved plan is `docs/plan.local.md`, the brief is `PROJECT_BRIEF.md`, and host details are in your local notes. All three are local only and never go in Git.
+Start every session by reading `docs/progress.md` and the latest entries in `docs/task-log.local.md`. Do the same after a conversation summary, and trust those files over the summary. Progress says which task is current, what comes next and what's open. The log records what each finished task did and learned. The approved plan is `docs/plan.local.md`, the brief is `PROJECT_BRIEF.md`, and host details are in your local notes. The log, plan, brief and notes are local only and never go in Git.
 
 ## Sessions
 
-- Do one task per session. When its acceptance test passes, update `docs/progress.md` and stop.
+- Work through the tasks in order in one long session, one task at a time. A new session is fine whenever the user wants one, because the files hold everything needed to restart.
+- When a task's acceptance test passes, add its entry to `docs/task-log.local.md`, update `docs/progress.md` and stop until the user says to continue.
+- Keep log entries short. Record what the code can't show: decisions, problems and their fixes, and anything a later task needs. Never put secrets in the log.
 - Read only what the current task needs. Look up a task's row in the plan instead of reading the whole plan.
 - Don't run multi-agent workflows unless asked.
 - At each milestone checkpoint, give the change summary, actual vs planned hours, the walkthrough link, three questions and a list of doubts. Then wait for approval.
