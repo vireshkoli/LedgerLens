@@ -1,0 +1,27 @@
+# Which model does which job. Code asks for a role and never names a model.
+# Until the cost gate (V3-1), the working roles run on the free local model. The roles on hosted
+# models are refused by the ₹0 cap in pricing.yaml until then.
+#
+# Candidates after the gate, decided by the pilot there (O6): openai/gpt-6-luna for the router,
+# decomposer, generator and long-context baseline, and anthropic/claude-haiku-5-5 for the judge.
+
+roles:
+  router:
+    provider: openai_compatible
+    model: Qwen/Qwen3.8-27B-FP8
+  decomposer:
+    provider: openai_compatible
+    model: Qwen/Qwen3.8-27B-FP8
+  generator:
+    provider: openai_compatible
+    model: Qwen/Qwen3.8-27B-FP8
+  long_context_baseline:
+    provider: openai_compatible
+    model: Qwen/Qwen3.8-27B-FP8
+  # Always a different family from the generator.
+  judge:
+    provider: google
+    model: gemini-3.5-flash-lite
+  showcase:
+    provider: anthropic
+    model: claude-sonnet-5-5

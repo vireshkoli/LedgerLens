@@ -1,0 +1,65 @@
+# Read from each provider's official pricing page on the last_verified date.
+#   Anthropic: https://platform.claude.com/docs/en/about-claude/pricing
+#   OpenAI: https://developers.openai.com/api/docs/pricing and the model's page
+#   Google: https://ai.google.dev/gemini-api/docs/pricing
+last_verified: 2026-11-05
+
+exchange_rate:
+  usd_inr: 94.86
+  as_of: 2026-11-03
+  source: FBIL reference rate
+
+# Added to every estimate on purpose. Whether GST applies to direct API purchases by an individual
+# is unconfirmed, so the estimate takes the higher figure.
+gst_rate: 0.18
+
+# ₹0 until the cost gate (V3-1), which keeps paid calls impossible by default. The brief's ceiling
+# is ₹1,500 a month, and raising this needs your yes at the gate.
+monthly_cap_inr: 0
+
+# USD per million tokens. A long_context block prices the whole request once its input, including
+# cached tokens, is above the threshold. Add a new dated entry when a price changes, so past dates
+# keep their price.
+models:
+  openai_compatible:
+    # Runs on the A40, so there's nothing to pay per token.
+    Qwen/Qwen3.8-27B-FP8:
+      - effective_from: 2026-11-05
+        input_usd: 0
+        cached_input_usd: 0
+        output_usd: 0
+  openai:
+    gpt-6-luna:
+      - effective_from: 2026-11-05
+        input_usd: 0.10
+        cached_input_usd: 0.01
+        output_usd: 0.50
+        long_context:
+          above_input_tokens: 272000
+          input_usd: 0.20
+          cached_input_usd: 0.02
+          output_usd: 0.75
+  anthropic:
+    claude-haiku-5-5:
+      - effective_from: 2026-11-05
+        input_usd: 0.10
+        cached_input_usd: 0.01
+        output_usd: 0.50
+        long_context:
+          above_input_tokens: 100000
+          input_usd: 0.50
+          cached_input_usd: 0.05
+          output_usd: 2.50
+    claude-sonnet-5-5:
+      - effective_from: 2026-11-05
+        input_usd: 2
+        cached_input_usd: 0.10
+        output_usd: 10
+  google:
+    # The paid tier's price. The free tier also exists, but the client can't tell which tier a key
+    # is on, so the higher price stands until V2-15 settles the judge.
+    gemini-3.5-flash-lite:
+      - effective_from: 2026-11-05
+        input_usd: 0.30
+        cached_input_usd: 0.03
+        output_usd: 2.50
